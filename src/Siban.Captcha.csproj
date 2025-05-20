@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -12,9 +12,14 @@
     <Description>A flexible and pluggable CAPTCHA generator for ASP.NET Core using ImageSharp and IDistributedCache.</Description>
     <PackageTags>captcha aspnetcore imagesharp destributedcache</PackageTags>
     <RepositoryUrl>https://github.com/Meysamda/Siban.Captcha</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
+
   <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="" />
+
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
     <PackageReference Include="SixLabors.Fonts" Version="2.1.2" />
