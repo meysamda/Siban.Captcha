@@ -12,19 +12,22 @@ public class CaptchaValidator : ICaptchaValidator
     }
 
     public Task<bool> ValidateAsync(string captchaData, CancellationToken cancellationToken = default)
-    {      
-        if (_options.IsSandboxMode)
-            return Task.FromResult(captchaData.Equals(_options.SandboxKey, StringComparison.OrdinalIgnoreCase));
-
+    {
         var captchaDataArray = captchaData.Split("_");
-        if (captchaDataArray.Length == 2)
+        if (captchaDataArray.Length != 2)
+            return Task.FromResult(false);
+
+        var captchaInput = captchaDataArray[1];
+        if (string.IsNullOrEmpty(captchaInput))
+            return Task.FromResult(false);
+
+        if (_options.IsSandboxMode)
+            return Task.FromResult(captchaInput.Equals(_options.SandboxKey, StringComparison.OrdinalIgnoreCase));
+
+        if (Guid.TryParse(captchaDataArray[0], out Guid captchaId))
         {
-            var captchaInput = captchaDataArray[1];
-            if (!string.IsNullOrEmpty(captchaInput) && Guid.TryParse(captchaDataArray[0], out Guid captchaId))
-            {
-                return ValidateAsync(captchaId, captchaDataArray[1], cancellationToken);
-            }
-        };
+            return ValidateAsync(captchaId, captchaInput, cancellationToken);
+        }
 
         return Task.FromResult(false);
     }

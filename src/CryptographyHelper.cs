@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Siban.Captcha;
 
-public static class CryptographyHelper
+internal static class CryptographyHelper
 {
     public static string HashText(string text)
     {

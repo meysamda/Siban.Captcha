@@ -30,7 +30,7 @@ public class CaptchaGenerator : ICaptchaGenerator
 
         var normalizedText = PersianCharactersHelper.NormalizeToEnglishNumbers(text);
         var hashedText = CryptographyHelper.HashText(normalizedText);
-        await _store.SaveCaptchaAsync(id, hashedText, cancellationToken);
+        await _store.SetCaptchaAsync(id, hashedText, cancellationToken);
 
         return result;
     }

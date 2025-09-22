@@ -15,7 +15,7 @@ public class CaptchaStore : ICaptchaStore
         cacheOptions = new() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_captchaOptions.ExpiresIn) };
     }
 
-    public async Task SaveCaptchaAsync(Guid id, string text, CancellationToken cancellationToken = default)
+    public async Task SetCaptchaAsync(Guid id, string text, CancellationToken cancellationToken = default)
     {
         var key = GetKey(id);
         await _cache.SetAsync(key + ":text", text, cacheOptions, cancellationToken);

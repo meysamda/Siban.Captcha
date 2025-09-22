@@ -2,7 +2,7 @@
 
 namespace Microsoft.Extensions.Caching.Distributed;
 
-public static class DistributedCacheExtentions
+internal static class DistributedCacheExtentions
 {
     public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, DistributedCacheEntryOptions options, CancellationToken token = default)
     {
