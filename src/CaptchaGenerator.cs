@@ -5,6 +5,7 @@ using SixLabors.Fonts;
 using System.Security.Cryptography;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Advanced;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Siban.Captcha;
 
@@ -53,7 +54,10 @@ public class CaptchaGenerator : ICaptchaGenerator
 
     private Image<Rgba32> DrawImage(string text)
     {
-        var font = SystemFonts.CreateFont("Arial", 36);
+        var collection = new FontCollection();
+        var fontFamily = collection.Add(_options.Font);
+        var font = new Font(fontFamily, 36);
+
         var img = new Image<Rgba32>(200, 70);
 
         img.Mutate(ctx =>

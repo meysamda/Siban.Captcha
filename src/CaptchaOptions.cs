@@ -7,6 +7,7 @@ public class CaptchaOptions
     public CaptchaDifficulty Difficulty { get; set; }
     public int ExpiresIn { get; set; }
     public int MaxAttempts { get; set; }
+    public required string Font { get; set; }
 
     public bool IsSandboxMode { get; set; }
     public string? SandboxKey { get; set; }
