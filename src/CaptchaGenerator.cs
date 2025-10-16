@@ -29,7 +29,7 @@ public class CaptchaGenerator : ICaptchaGenerator
         var image = DrawImage(text);
         var result = new CaptchaResult(id, text, image);
 
-        var normalizedText = PersianCharactersHelper.NormalizeToEnglishNumbers(text);
+        var normalizedText = PersianNumbersHelper.NormalizeToEnglishNumbers(text);
         var hashedText = CryptographyHelper.HashText(normalizedText);
         await _store.SetCaptchaAsync(id, hashedText, cancellationToken);
 

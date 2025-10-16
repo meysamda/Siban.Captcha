@@ -13,31 +13,31 @@ public class CaptchaValidator : ICaptchaValidator
 
     public Task<bool> ValidateAsync(string captchaData, CancellationToken cancellationToken = default)
     {
+        string? idStr = null;
+        string input = captchaData;
+
         var captchaDataArray = captchaData.Split("_");
-        if (captchaDataArray.Length != 2)
-            return Task.FromResult(false);
-
-        var captchaInput = captchaDataArray[1];
-        if (string.IsNullOrEmpty(captchaInput))
-            return Task.FromResult(false);
-
-        if (_options.IsSandboxMode)
-            return Task.FromResult(captchaInput.Equals(_options.SandboxKey, StringComparison.OrdinalIgnoreCase));
-
-        if (Guid.TryParse(captchaDataArray[0], out Guid captchaId))
+        if (captchaDataArray.Length == 2)
         {
-            return ValidateAsync(captchaId, captchaInput, cancellationToken);
+            idStr = captchaDataArray[0];
+            input = captchaDataArray[1];
         }
 
-        return Task.FromResult(false);
+        return ValidateAsync(idStr, input, cancellationToken);
     }
 
-    public async Task<bool> ValidateAsync(Guid id, string input, CancellationToken cancellationToken = default)
+    public async Task<bool> ValidateAsync(string? idStr, string input, CancellationToken cancellationToken = default)
     {
-        var normalizedInput = PersianCharactersHelper.NormalizeToEnglishNumbers(input);
-
+        var normalizedInput = PersianNumbersHelper.NormalizeToEnglishNumbers(input);
         if (_options.IsSandboxMode)
-            return normalizedInput.Equals(_options.SandboxKey, StringComparison.OrdinalIgnoreCase);
+        {
+            var equals = normalizedInput.Equals(_options.SandboxKey, StringComparison.OrdinalIgnoreCase);
+            if (equals)
+                return true;
+        }
+
+        if (!Guid.TryParse(idStr, out Guid id))
+            return false;
 
         var hashedText = await _store.GetCaptchaTextAsync(id, cancellationToken);
         var attempts = await _store.GetCaptchaAttemptsAsync(id, cancellationToken);

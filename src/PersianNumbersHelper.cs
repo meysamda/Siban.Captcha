@@ -1,6 +1,6 @@
 namespace Siban.Captcha;
 
-public static class PersianCharactersHelper
+public static class PersianNumbersHelper
 {
     public static string ConvertToPersian(string text)
     {
